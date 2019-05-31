@@ -1,0 +1,5 @@
+FROM  1.1.1.1/project-name/microservice-base:4.4.528
+
+COPY . /app
+
+ENTRYPOINT dotnet SomeService.Console.dll --Address $(hostname -i)
