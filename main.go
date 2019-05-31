@@ -1,9 +1,17 @@
 package main
 
 import (
-	"fmt"
+	"os"
+	"log"
+	"github.com/urfave/cli"
+	// "github.com/moby/buildkit/frontend/dockerfile/parser"
 )
 
+var app = cli.NewApp()
+
 func main() {
-	fmt.Println("OK")
+	err := app.Run(os.Args)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
