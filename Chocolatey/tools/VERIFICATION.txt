@@ -1,0 +1,6 @@
+﻿
+I am the developer/author of this software
+
+For verification Get-FileHash can be used
+Here are the HASHs
+
