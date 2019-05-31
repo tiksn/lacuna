@@ -24,7 +24,7 @@ func commands() {
 			Aliases: []string{"s"},
 			Usage:   "Sets base image tag",
 			Action: func(c *cli.Context) {
-				fmt.Printf("not implemented yet. Versions is %q", c.Args().First())
+				setBaseImageVersion(c.Args().Get(0), c.Args().Get(1), c.Args().Get(2))
 			},
 		},
 	}
@@ -37,4 +37,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func setBaseImageVersion(infile string, version string, outfile string) {
+	fmt.Printf("not implemented yet. Versions is %q %q %q", infile, version, outfile)
 }
