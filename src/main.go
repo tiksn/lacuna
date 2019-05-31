@@ -24,7 +24,15 @@ func commands() {
 			Aliases: []string{"s"},
 			Usage:   "Sets base image tag",
 			Action: func(c *cli.Context) {
-				setBaseImageVersion(c.Args().Get(0), c.Args().Get(1), c.Args().Get(2))
+				var inputFile = c.String("input")
+				var versionNumber = c.String("input")
+				var outputFile = c.String("output")
+				setBaseImageVersion(inputFile, versionNumber, outputFile)
+			},
+			Flags: []cli.Flag{
+				cli.StringFlag{Name: "input"},
+				cli.StringFlag{Name: "version"},
+				cli.StringFlag{Name: "output"},
 			},
 		},
 	}
