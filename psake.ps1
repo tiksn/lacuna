@@ -63,7 +63,7 @@ Task BuildLinux64 -Depends PreBuild {
     Exec { go build -o $outputFile -tags GOOS=linux -tags GOARCH=amd64  }
 }
 
-Task PreBuild -Depends Init,Clean,Format {
+Task PreBuild -Depends Init,Clean,Format,InstallPackages {
     $script:publishFolder = Join-Path -Path $script:trashFolder -ChildPath "bin"
     $script:chocolateyPublishFolderFolder = Join-Path -Path $script:trashFolder -ChildPath "choco"
     $script:chocoLegal = Join-Path -Path $script:chocolateyPublishFolderFolder -ChildPath "legal"
@@ -72,6 +72,11 @@ Task PreBuild -Depends Init,Clean,Format {
     New-Item -Path $script:chocoLegal -ItemType Directory | Out-Null
     New-Item -Path $script:chocoTools -ItemType Directory | Out-Null
     New-Item -Path $script:publishFolder -ItemType Directory | Out-Null
+}
+
+Task InstallPackages {
+    Exec {go get "github.com/urfave/cli"}
+    Exec { go get "github.com/moby/buildkit/frontend/dockerfile/parser" }
 }
 
 Task Format -Depends Clean {
