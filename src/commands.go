@@ -1,10 +1,10 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
+	"github.com/docker/distribution/reference"
 	"github.com/moby/buildkit/frontend/dockerfile/parser"
 )
 
@@ -28,10 +28,15 @@ func setBaseImageAstVersion(node *parser.Node, imageName string, versionNumber s
 	for _, c := range node.Children {
 		setBaseImageAstVersion(c, imageName, versionNumber)
 	}
+
 	if node.Value == "from" {
 		var imageTagNode = node.Next
-		fmt.Printf("X - %q", imageTagNode.Value)
-		fmt.Println()
+		var r, err = reference.Parse(imageTagNode.Value)
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		log.Fatalln(r.String())
 	}
 
 }
