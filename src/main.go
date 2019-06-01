@@ -26,12 +26,14 @@ func commands() {
 				var inputFile = c.String("input")
 				var versionNumber = c.String("input")
 				var outputFile = c.String("output")
-				setBaseImageVersion(inputFile, versionNumber, outputFile)
+				var imageName = c.String("image")
+				setBaseImageVersion(inputFile, imageName, versionNumber, outputFile)
 			},
 			Flags: []cli.Flag{
 				cli.StringFlag{Name: "input"},
 				cli.StringFlag{Name: "version"},
 				cli.StringFlag{Name: "output"},
+				cli.StringFlag{Name: "image"},
 			},
 		},
 	}
