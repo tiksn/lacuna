@@ -1,11 +1,10 @@
 package main
 
 import (
-	"fmt"
-	"github.com/urfave/cli"
 	"log"
 	"os"
-	// "github.com/moby/buildkit/frontend/dockerfile/parser"
+
+	"github.com/urfave/cli"
 )
 
 var app = cli.NewApp()
@@ -45,8 +44,4 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-func setBaseImageVersion(infile string, version string, outfile string) {
-	fmt.Printf("not implemented yet. Versions is %q %q %q", infile, version, outfile)
 }
