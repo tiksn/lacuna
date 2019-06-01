@@ -14,11 +14,13 @@
             "args": [
                 "s",
                 "-input",
-                "SampleInputDockerFile",
+                "../SampleInputDockerFile",
+                "-image",
+                "1.1.1.1/project-name/microservice-base",
                 "-version",
                 "1.2.3",
                 "-output",
-                ".trash/SampleOutputDockerFile"
+                "../.trash/SampleOutputDockerFile"
             ]
         }
     ]
