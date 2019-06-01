@@ -1,5 +1,5 @@
 Properties {
-    $version="0.0.1"
+    $version = "0.0.1"
 }
 
 Task PublishChocolateyPackage -Depends PackChocolateyPackage {
@@ -10,7 +10,7 @@ Task PublishLinuxRpmPackages -Depends PackLinuxPackage {
     #
 }
 
-Task PackLinuxPackage -Depends BuildLinux64,BuildRhel64 {
+Task PackLinuxPackage -Depends BuildLinux64, BuildRhel64 {
 }
 
 Task PackChocolateyPackage -Depends ZipBuildArtifacts {
@@ -32,7 +32,7 @@ Task PackChocolateyPackage -Depends ZipBuildArtifacts {
     $script:chocoNupkg = Join-Path -Path $script:trashFolder -ChildPath "lacuna.$version.nupkg"
 }
 
-Task ZipBuildArtifacts -Depends BuildWinx64,BuildWinx86 {
+Task ZipBuildArtifacts -Depends BuildWinx64, BuildWinx86 {
     $script:artifactsZipX64 = Join-Path -Path $script:chocoTools -ChildPath "winx64.zip"
     $script:artifactsZipX86 = Join-Path -Path $script:chocoTools -ChildPath "winx86.zip"
 
@@ -40,13 +40,13 @@ Task ZipBuildArtifacts -Depends BuildWinx64,BuildWinx86 {
     Compress-Archive -Path "$script:publishWinx86Folder\*" -CompressionLevel Optimal -DestinationPath $script:artifactsZipX86
 }
 
-Task Build -Depends BuildWinx64,BuildWinx86,BuildLinux64
+Task Build -Depends BuildWinx64, BuildWinx86, BuildLinux64
 
 Task BuildWinx64 -Depends PreBuild {
-   $script:publishWinx64Folder = Join-Path -Path $script:publishFolder -ChildPath "winx64"
-   $outputFile = Join-Path -Path $script:publishWinx64Folder -ChildPath "lacuna.exe"
+    $script:publishWinx64Folder = Join-Path -Path $script:publishFolder -ChildPath "winx64"
+    $outputFile = Join-Path -Path $script:publishWinx64Folder -ChildPath "lacuna.exe"
 
-   Exec { go build -o $outputFile -tags GOOS=windows -tags GOARCH=amd64 ".\src\" }
+    Exec { go build -o $outputFile -tags GOOS=windows -tags GOARCH=amd64 ".\src\" }
 }
 
 Task BuildWinx86 -Depends PreBuild {
@@ -63,7 +63,7 @@ Task BuildLinux64 -Depends PreBuild {
     Exec { go build -o $outputFile -tags GOOS=linux -tags GOARCH=amd64 ".\src\" }
 }
 
-Task PreBuild -Depends Init,Clean,Format,InstallPackages {
+Task PreBuild -Depends Init, Clean, Format, InstallPackages {
     $script:publishFolder = Join-Path -Path $script:trashFolder -ChildPath "bin"
     $script:chocolateyPublishFolderFolder = Join-Path -Path $script:trashFolder -ChildPath "choco"
     $script:chocoLegal = Join-Path -Path $script:chocolateyPublishFolderFolder -ChildPath "legal"
@@ -77,6 +77,7 @@ Task PreBuild -Depends Init,Clean,Format,InstallPackages {
 Task InstallPackages {
     Exec { go get "github.com/urfave/cli" }
     Exec { go get "github.com/moby/buildkit/frontend/dockerfile/parser" }
+    Exec { go get "github.com/docker/distribution/reference" }
 }
 
 Task Format -Depends Clean {
@@ -87,11 +88,11 @@ Task Clean -Depends Init {
 }
 
 Task Init {
-   $date = Get-Date
-   $ticks = $date.Ticks
-   $trashFolder = Join-Path -Path . -ChildPath ".trash"
-   $script:trashFolder = Join-Path -Path $trashFolder -ChildPath $ticks.ToString("D19")
-   New-Item -Path $script:trashFolder -ItemType Directory | Out-Null
-   $script:trashFolder = Resolve-Path -Path $script:trashFolder
+    $date = Get-Date
+    $ticks = $date.Ticks
+    $trashFolder = Join-Path -Path . -ChildPath ".trash"
+    $script:trashFolder = Join-Path -Path $trashFolder -ChildPath $ticks.ToString("D19")
+    New-Item -Path $script:trashFolder -ItemType Directory | Out-Null
+    $script:trashFolder = Resolve-Path -Path $script:trashFolder
 }
  
