@@ -29,8 +29,8 @@ func setBaseImageAstVersion(node *parser.Node, imageName string, versionNumber s
 		setBaseImageAstVersion(c, imageName, versionNumber)
 	}
 	if node.Value == "from" {
-		fmt.Printf("X - %q", node.Value)
-		fmt.Printf("X - %q", node.Next.Value)
+		var imageTagNode = node.Next
+		fmt.Printf("X - %q", imageTagNode.Value)
 		fmt.Println()
 	}
 
