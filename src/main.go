@@ -24,7 +24,7 @@ func commands() {
 			Usage:   "Sets base image tag",
 			Action: func(c *cli.Context) {
 				var inputFile = c.String("input")
-				var versionNumber = c.String("input")
+				var versionNumber = c.String("version")
 				var outputFile = c.String("output")
 				var imageName = c.String("image")
 				setBaseImageVersion(inputFile, imageName, versionNumber, outputFile)
