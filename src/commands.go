@@ -1,11 +1,34 @@
 package main
 
 import (
-	"os"
-
+	"fmt"
 	"github.com/docker/distribution/reference"
 	"github.com/moby/buildkit/frontend/dockerfile/parser"
+	"os"
 )
+
+func NodeToString(node *parser.Node) string {
+	str := ""
+	str += node.Value
+
+	if len(node.Flags) > 0 {
+		str += fmt.Sprintf(" %q", node.Flags)
+	}
+
+	for _, n := range node.Children {
+		str += NodeToString(n) + "\n"
+	}
+
+	for n := node.Next; n != nil; n = n.Next {
+		if len(n.Children) > 0 {
+			str += " " + NodeToString(n)
+		} else {
+			str += " " + n.Value
+		}
+	}
+
+	return str
+}
 
 func setBaseImageVersion(infile string, imageName string, versionNumber string, outfile string) {
 
@@ -28,7 +51,7 @@ func setBaseImageVersion(infile string, imageName string, versionNumber string, 
 
 	defer writer.Close()
 
-	writer.WriteString(result.AST.Dump())
+	writer.WriteString(NodeToString(result.AST))
 	writer.Sync()
 }
 
