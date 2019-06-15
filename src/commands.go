@@ -1,7 +1,6 @@
 package main
 
 import (
-	"log"
 	"os"
 
 	"github.com/docker/distribution/reference"
@@ -12,15 +11,25 @@ func setBaseImageVersion(infile string, imageName string, versionNumber string, 
 
 	var reader, err = os.Open(infile)
 	if err != nil {
-		log.Fatalln(err)
+		panic(err)
 	}
 
 	var result, err2 = parser.Parse(reader)
 	if err2 != nil {
-		log.Fatalln(err2)
+		panic(err2)
 	}
 
 	setBaseImageAstVersion(result.AST, imageName, versionNumber)
+
+	writer, err3 := os.Create(outfile)
+	if err3 != nil {
+		panic(err3)
+	}
+
+	defer writer.Close()
+
+	writer.WriteString(result.AST.Dump())
+	writer.Sync()
 }
 
 func setBaseImageAstVersion(node *parser.Node, imageName string, versionNumber string) {
@@ -33,16 +42,15 @@ func setBaseImageAstVersion(node *parser.Node, imageName string, versionNumber s
 		var imageTagNode = node.Next
 		var r, err = reference.Parse(imageTagNode.Value)
 		if err != nil {
-			log.Fatalln(err)
+			panic(err)
 		}
 
 		if nt, isTagged := r.(reference.NamedTagged); isTagged {
 			//TODO: Check old tag log.Fatalln(nt.Tag())
 			setBaseImageTagVersion(imageTagNode, nt, versionNumber)
-			log.Fatalln(imageTagNode.Value)
+		} else {
+			panic("Can't extract tags.")
 		}
-
-		log.Fatalln("Can't extract tags.")
 	}
 
 }
@@ -50,7 +58,7 @@ func setBaseImageAstVersion(node *parser.Node, imageName string, versionNumber s
 func setBaseImageTagVersion(imageTagNode *parser.Node, fromNode reference.NamedTagged, versionNumber string) {
 	var changedReference, err = reference.WithTag(fromNode, versionNumber)
 	if err != nil {
-		log.Fatalln(err)
+		panic(err)
 	}
 	imageTagNode.Value = changedReference.String()
 }
