@@ -39,7 +39,7 @@ func setBaseImageAstVersion(node *parser.Node, imageName string, versionNumber s
 		if nt, isTagged := r.(reference.NamedTagged); isTagged {
 			//TODO: Check old tag log.Fatalln(nt.Tag())
 			setBaseImageTagVersion(imageTagNode, nt, versionNumber)
-			log.Fatalln(nt)
+			log.Fatalln(imageTagNode.Value)
 		}
 
 		log.Fatalln("Can't extract tags.")
@@ -53,5 +53,4 @@ func setBaseImageTagVersion(imageTagNode *parser.Node, fromNode reference.NamedT
 		log.Fatalln(err)
 	}
 	imageTagNode.Value = changedReference.String()
-	log.Fatalln(changedReference)
 }
