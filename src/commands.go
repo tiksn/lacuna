@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/docker/distribution/reference"
 	"github.com/moby/buildkit/frontend/dockerfile/parser"
-	"os"
 )
 
 func NodeToString(node *parser.Node) string {
@@ -30,25 +29,10 @@ func NodeToString(node *parser.Node) string {
 	return str
 }
 
-func setBaseImageVersion(node *parser.Node, imageName string, versionNumber string, outfile string) {
-
-	setBaseImageAstVersion(node, imageName, versionNumber)
-
-	writer, err3 := os.Create(outfile)
-	if err3 != nil {
-		panic(err3)
-	}
-
-	defer writer.Close()
-
-	writer.WriteString(NodeToString(node))
-	writer.Sync()
-}
-
-func setBaseImageAstVersion(node *parser.Node, imageName string, versionNumber string) {
+func setBaseImageVersion(node *parser.Node, imageName string, versionNumber string) {
 
 	for _, c := range node.Children {
-		setBaseImageAstVersion(c, imageName, versionNumber)
+		setBaseImageVersion(c, imageName, versionNumber)
 	}
 
 	if node.Value == "from" {
