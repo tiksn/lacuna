@@ -46,21 +46,27 @@ Task BuildWinx64 -Depends PreBuild {
     $script:publishWinx64Folder = Join-Path -Path $script:publishFolder -ChildPath "winx64"
     $outputFile = Join-Path -Path $script:publishWinx64Folder -ChildPath "lacuna.exe"
 
-    Exec { go build -o $outputFile -tags GOOS=windows -tags GOARCH=amd64 ".\src\" }
+    $env:GOOS = "windows"
+    $env:GOARCH = "amd64"
+    Exec { go build -o $outputFile ".\src\" }
 }
 
 Task BuildWinx86 -Depends PreBuild {
     $script:publishWinx86Folder = Join-Path -Path $script:publishFolder -ChildPath "winx86"
     $outputFile = Join-Path -Path $script:publishWinx86Folder -ChildPath "lacuna.exe"
-
-    Exec { go build -o $outputFile -tags GOOS=windows -tags GOARCH=386 ".\src\" }
+    
+    $env:GOOS = "windows"
+    $env:GOARCH = "386"
+    Exec { go build -o $outputFile ".\src\" }
 }
 
 Task BuildLinux64 -Depends PreBuild {
     $script:publishLinux64Folder = Join-Path -Path $script:publishFolder -ChildPath "linux64"
     $outputFile = Join-Path -Path $script:publishLinux64Folder -ChildPath "lacuna"
 
-    Exec { go build -o $outputFile -tags GOOS=linux -tags GOARCH=amd64 ".\src\" }
+    $env:GOOS = "linux"
+    $env:GOARCH = "amd64"
+    Exec { go build -o $outputFile ".\src\" }
 }
 
 Task PreBuild -Depends Init, Clean, Format, InstallPackages {
