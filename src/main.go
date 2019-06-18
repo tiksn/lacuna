@@ -23,10 +23,10 @@ func commands() {
 			Usage:   "Sets base image tag",
 			Action: func(c *cli.Context) {
 				var versionNumber = c.String("version")
-				var outputFile = c.String("output")
 				var imageName = c.String("image")
 				var rootNode = readInputFile(c)
-				setBaseImageVersion(rootNode, imageName, versionNumber, outputFile)
+				setBaseImageVersion(rootNode, imageName, versionNumber)
+				writeOutputFile(c, rootNode)
 			},
 			Flags: []cli.Flag{
 				cli.StringFlag{Name: "input"},
