@@ -30,8 +30,8 @@ func commands() {
 			},
 			Flags: []cli.Flag{
 				cli.StringFlag{Name: "input"},
-				cli.StringFlag{Name: "version"},
 				cli.StringFlag{Name: "output"},
+				cli.StringFlag{Name: "version"},
 				cli.StringFlag{Name: "image"},
 			},
 		},
