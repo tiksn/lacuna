@@ -30,19 +30,9 @@ func NodeToString(node *parser.Node) string {
 	return str
 }
 
-func setBaseImageVersion(infile string, imageName string, versionNumber string, outfile string) {
+func setBaseImageVersion(node *parser.Node, imageName string, versionNumber string, outfile string) {
 
-	var reader, err = os.Open(infile)
-	if err != nil {
-		panic(err)
-	}
-
-	var result, err2 = parser.Parse(reader)
-	if err2 != nil {
-		panic(err2)
-	}
-
-	setBaseImageAstVersion(result.AST, imageName, versionNumber)
+	setBaseImageAstVersion(node, imageName, versionNumber)
 
 	writer, err3 := os.Create(outfile)
 	if err3 != nil {
@@ -51,7 +41,7 @@ func setBaseImageVersion(infile string, imageName string, versionNumber string, 
 
 	defer writer.Close()
 
-	writer.WriteString(NodeToString(result.AST))
+	writer.WriteString(NodeToString(node))
 	writer.Sync()
 }
 
