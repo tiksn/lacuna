@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 
+	"github.com/moby/buildkit/frontend/dockerfile/parser"
 	"github.com/urfave/cli"
 )
 
@@ -15,6 +16,22 @@ func info() {
 	app.Version = "1.0.0"
 }
 
+func readInputFile(c *cli.Context) *parser.Node {
+	var inputFile = c.String("input")
+
+	var reader, err = os.Open(inputFile)
+	if err != nil {
+		panic(err)
+	}
+
+	var result, err2 = parser.Parse(reader)
+	if err2 != nil {
+		panic(err2)
+	}
+
+	return result.AST
+}
+
 func commands() {
 	app.Commands = []cli.Command{
 		{
@@ -22,11 +39,11 @@ func commands() {
 			Aliases: []string{"s"},
 			Usage:   "Sets base image tag",
 			Action: func(c *cli.Context) {
-				var inputFile = c.String("input")
 				var versionNumber = c.String("version")
 				var outputFile = c.String("output")
 				var imageName = c.String("image")
-				setBaseImageVersion(inputFile, imageName, versionNumber, outputFile)
+				var rootNode = readInputFile(c)
+				setBaseImageVersion(rootNode, imageName, versionNumber, outputFile)
 			},
 			Flags: []cli.Flag{
 				cli.StringFlag{Name: "input"},
