@@ -22,3 +22,17 @@ func readInputFile(c *cli.Context) *parser.Node {
 
 	return result.AST
 }
+
+func writeOutputFile(c *cli.Context, node *parser.Node) {
+	var outputFile = c.String("output")
+
+	writer, err := os.Create(outputFile)
+	if err != nil {
+		panic(err)
+	}
+
+	defer writer.Close()
+
+	writer.WriteString(NodeToString(node))
+	writer.Sync()
+}
