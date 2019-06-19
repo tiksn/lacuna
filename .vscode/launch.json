@@ -11,14 +11,21 @@
             "mode": "auto",
             "program": "${workspaceFolder}/src/main.go",
             "env": {},
+            // "args": [
+            //     "s",
+            //     "-input",
+            //     "../SampleInputDockerFile",
+            //     "-image",
+            //     "1.1.1.1/project-name/microservice-base",
+            //     "-version",
+            //     "1.2.3",
+            //     "-output",
+            //     "../.trash/SampleOutputDockerFile"
+            // ]
             "args": [
-                "s",
+                "f",
                 "-input",
                 "../SampleInputDockerFile",
-                "-image",
-                "1.1.1.1/project-name/microservice-base",
-                "-version",
-                "1.2.3",
                 "-output",
                 "../.trash/SampleOutputDockerFile"
             ]
