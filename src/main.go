@@ -18,6 +18,19 @@ func info() {
 func commands() {
 	app.Commands = []cli.Command{
 		{
+			Name:    "format",
+			Aliases: []string{"f"},
+			Usage:   "Format Docker file",
+			Action: func(c *cli.Context) {
+				var rootNode = readInputFile(c)
+				writeOutputFile(c, rootNode)
+			},
+			Flags: []cli.Flag{
+				cli.StringFlag{Name: "input"},
+				cli.StringFlag{Name: "output"},
+			},
+		},
+		{
 			Name:    "set-base-image-tag",
 			Aliases: []string{"s"},
 			Usage:   "Sets base image tag",
