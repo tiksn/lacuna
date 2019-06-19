@@ -33,7 +33,7 @@ func commands() {
 		{
 			Name:    "set-base-image-tag",
 			Aliases: []string{"s"},
-			Usage:   "Sets base image tag",
+			Usage:   "Sets docker file's base image tag",
 			Action: func(c *cli.Context) {
 				var versionNumber = c.String("version")
 				var imageName = c.String("image")
