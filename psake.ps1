@@ -23,9 +23,30 @@ Task PackChocolateyPackage -Depends ZipBuildArtifacts {
     $zipX64Hash = Get-FileHash -Path $script:artifactsZipX64
     $zipX86Hash = Get-FileHash -Path $script:artifactsZipX86
 
-    Add-Content -Path $verificationFilePath -Value ("File Hash: winx64.zip - " + $zipX64Hash.Algorithm + " - " + $zipX64Hash.Hash)
-    Add-Content -Path $verificationFilePath -Value ("File Hash: winx86.zip - " + $zipX86Hash.Algorithm + " - " + $zipX86Hash.Hash)
+    function AddAllHashes ($Path, $Depth = 0) {
+        $items = Get-ChildItem -Path $Path -File
+
+        foreach($item in $items){
+            $fileName = $item.Name
+            $hash = Get-FileHash -Path $item
+            $algorithm = $hash.Algorithm
+            $hash = $hash.Hash
+            Add-Content -Path $verificationFilePath -Value "Archived file $fileName has Hash: $algorithm $hash"
+        }
+    }
     
+    Add-Content -Path $verificationFilePath -Value ("File Hash: winx64.zip - " + $zipX64Hash.Algorithm + " - " + $zipX64Hash.Hash)
+    AddAllHashes($script:publishWinx64Folder)
+    Add-Content -Path $verificationFilePath -Value ""
+    Add-Content -Path $verificationFilePath -Value ("File Hash: winx86.zip - " + $zipX86Hash.Algorithm + " - " + $zipX86Hash.Hash)
+    AddAllHashes($script:publishWinx86Folder)
+    Add-Content -Path $verificationFilePath -Value ""
+    Add-Content -Path $verificationFilePath -Value ""
+
+    $repoStatus = Get-RepositoryStatus
+    $commitHash = $repoStatus.CurrentCommit
+    Add-Content -Path $verificationFilePath -Value "Git commit hash: $commitHash"
+
     $chocoNuspec = Join-Path -Path $script:chocolateyPublishFolderFolder -ChildPath lacuna.nuspec
     Copy-Item -Path ".\Chocolatey\lacuna.nuspec" -Destination $chocoNuspec
     Exec { choco pack $chocoNuspec --version $version --outputdirectory $script:trashFolder version=$version }
