@@ -1,5 +1,5 @@
 ﻿
-From: https://github.com/tiksn/Leveret/blob/develop/lacuna
+From: https://github.com/tiksn/lacuna
 
 LICENSE
 
