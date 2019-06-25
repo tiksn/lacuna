@@ -1,6 +1,6 @@
 ﻿
 I am the developer/author of this software
 
-For verification Get-FileHash can be used
+For verification Get-FileHash can be used (each build even on the same git commit generates unique ZIP files but content is verifiable via HASHes)
 Here are the HASHs
 
